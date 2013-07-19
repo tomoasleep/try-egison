@@ -11,7 +11,7 @@ socketIO = require("socket.io")
 
 app = express()
 server = http.createServer(app)
-ioServer = socketIO.listen(server)
+socketIOServer = socketIO.listen(server)
 
 # all environments
 app.set "port", process.env.PORT or 3000
@@ -33,10 +33,9 @@ app.use express.errorHandler()  if "development" is app.get("env")
 
 # routing
 app.get "/", routes.index
-app.get "/console", routes.console
 
 server.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
 
-ioServer.sockets.on 'connection', EgisonInterface.socket_handler
+socketIOServer.sockets.on 'connection', EgisonInterface.socketHandler
 

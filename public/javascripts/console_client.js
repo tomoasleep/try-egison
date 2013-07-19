@@ -3,7 +3,7 @@
   var launchConsole, launchSocket;
 
   launchConsole = function(socket) {
-    var handler, write_response;
+    var handler;
     window.jqconsole = $('#console').jqconsole('', '> ');
     jqconsole.RegisterShortcut('Z', function() {
       jqconsole.AbortPrompt();
@@ -27,15 +27,10 @@
         });
       }
     };
-    write_response = function(response) {
-      jqconsole.Write(response.message);
+    jqconsole.inputReady = function() {
       return jqconsole.Prompt(true, handler);
     };
-    socket.on('eval response', function(data) {
-      console.log('received: \n' + data.message);
-      return write_response(data);
-    });
-    jqconsole.Prompt(true, handler);
+    jqconsole.inputReady();
     return jqconsole;
   };
 
@@ -43,8 +38,14 @@
     var socket;
     socket = io.connect('http://localhost:3000');
     return socket.on('connect', function() {
-      launchConsole(socket);
-      return console.log('connected');
+      var jqconsole;
+      jqconsole = launchConsole(socket);
+      console.log('connected');
+      return socket.on('eval response', function(data) {
+        console.log('received: \n' + data.message);
+        jqconsole.Write(data.message);
+        return jqconsole.inputReady();
+      });
     });
   };
 

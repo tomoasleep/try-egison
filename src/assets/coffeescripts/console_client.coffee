@@ -25,25 +25,25 @@ launchConsole = (socket) ->
     if command
       socket.emit 'eval request', message: command
 
-  write_response = (response) ->
-    jqconsole.Write(response.message)
+  jqconsole.inputReady = () ->
     jqconsole.Prompt true, handler
 
-  socket.on('eval response', (data) ->
-    console.log 'received: \n' + data.message
-    write_response(data)
-  )
-  
-  jqconsole.Prompt true, handler
-
+  jqconsole.inputReady()
   jqconsole
 
 launchSocket = () ->
   socket = io.connect('http://localhost:3000')
-  socket.on('connect', () ->
-    launchConsole socket
-    console.log('connected')
-  )
 
+  socket.on('connect', () ->
+    jqconsole = launchConsole socket
+    console.log('connected')
+
+    socket.on('eval response', (data) ->
+      console.log 'received: \n' + data.message
+      jqconsole.Write(data.message)
+      jqconsole.inputReady()
+    )
+  )
+  
 $(() -> launchSocket())
 

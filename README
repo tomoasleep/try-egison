@@ -4,5 +4,5 @@ How to use
 1. Install node.js, npm, and egison(https://github.com/egisatoshi/egison3)
 2. `npm install` (to install dependent packages)
 3. `npm start` (start node.js and express)
-4. Access to "http://localhost:3000/console"
+4. Access to "http://localhost:3000"
 

@@ -1,10 +1,10 @@
 child_process = require('child_process')
 
-program_name = 'egison'
+programName = 'egison'
 
 class EgisonInterface
   constructor: (@handler) ->
-    @process = child_process.spawn(program_name, ['--prompt', ''])
+    @process = child_process.spawn(programName, ['--prompt', ''])
 
     @process.stdout.on('data', (data) =>
       str = data.toString('utf8')
@@ -20,11 +20,11 @@ class EgisonInterface
     console.log('egison stdin: \n' + msg)
     @process.stdin.write(msg + '\n')
 
-  exit: () ->
+  exitProcess: () ->
     @process.stdout.removeAllListeners('data')
     @process.kill('SIGTERM')
 
-  @socket_handler: (socket) ->
+  @socketHandler: (socket) ->
     egison = new EgisonInterface (msg) ->
       socket.emit 'eval response', message: msg
 
@@ -32,7 +32,7 @@ class EgisonInterface
       egison.eval data.message
 
     socket.on 'disconnect', () ->
-      egison.exit()
+      egison.exitProcess()
       console.log('egison exited.')
 
     socket
