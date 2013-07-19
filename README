@@ -1,0 +1,8 @@
+
+How to use
+
+1. Install node.js and npm
+2. `npm install` (to install dependency packages)
+3. `npm start` (start node.js and express)
+4. Access to "http://localhost:3000/console"
+
