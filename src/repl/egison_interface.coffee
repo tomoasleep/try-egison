@@ -20,12 +20,22 @@ class EgisonInterface
     console.log('egison stdin: \n' + msg)
     @process.stdin.write(msg + '\n')
 
+  exit: () ->
+    @process.stdout.removeAllListeners('data')
+    @process.kill('SIGTERM')
+
   @socket_handler: (socket) ->
     egison = new EgisonInterface (msg) ->
       socket.emit 'eval response', message: msg
 
     socket.on 'eval request', (data) ->
-      egison.eval data.message, egison
+      egison.eval data.message
+
+    socket.on 'disconnect', () ->
+      egison.exit()
+      console.log('egison exited.')
+
+    socket
 
 exports.EgisonInterface = EgisonInterface
 
