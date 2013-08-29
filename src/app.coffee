@@ -6,7 +6,7 @@ express = require("express")
 routes = require("./routes")
 http = require("http")
 path = require("path")
-EgisonInterface = require("./repl/egison_interface").EgisonInterface
+EgisonInterface = require("./repl/egison_interface")
 socketIO = require("socket.io")
 
 app = express()

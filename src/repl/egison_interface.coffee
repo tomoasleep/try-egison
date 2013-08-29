@@ -37,5 +37,5 @@ class EgisonInterface
 
     socket
 
-exports.EgisonInterface = EgisonInterface
+module.exports = EgisonInterface
 
